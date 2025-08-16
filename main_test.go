@@ -23,7 +23,7 @@ func TestRootHandler(t *testing.T) {
 	server := server{newrelicApp: newrelicApp, logger: logger}
 
 	// Act
-	server.rootHandler(rr, req)
+	server.RootHandler(rr, req)
 
 	// Assert
 	if status := rr.Code; status != http.StatusOK {
@@ -50,7 +50,7 @@ func TestReportHandler(t *testing.T) {
 	server := server{newrelicApp: newrelicApp, logger: logger}
 
 	// Act
-	server.reportHandler(rr, req)
+	server.ReportHandler(rr, req)
 
 	// Assert
 	if status := rr.Code; status != http.StatusOK {

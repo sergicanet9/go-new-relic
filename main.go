@@ -43,12 +43,12 @@ func (s *server) respond(w http.ResponseWriter, response string) {
 	fmt.Fprint(w, response)
 }
 
-func (s *server) rootHandler(w http.ResponseWriter, r *http.Request) {
+func (s *server) RootHandler(w http.ResponseWriter, r *http.Request) {
 	s.logger.Println("The root route has been reached!")
 	s.respond(w, "The server is running")
 }
 
-func (s *server) reportHandler(w http.ResponseWriter, r *http.Request) {
+func (s *server) ReportHandler(w http.ResponseWriter, r *http.Request) {
 	s.logger.Println("Generating a report log and sending it to New Relic APM with manual instrumentation...")
 
 	// Simulate a blocking operation that takes 1 second
@@ -60,8 +60,8 @@ func (s *server) reportHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	server := NewServer()
 
-	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/", server.rootHandler))
-	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/report", server.reportHandler))
+	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/", server.RootHandler))
+	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/report", server.ReportHandler))
 
 	server.logger.Printf("Server is running on port 8080...")
 	http.ListenAndServe(":8080", nil)
