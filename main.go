@@ -16,7 +16,7 @@ type server struct {
 	logger      *log.Logger
 }
 
-func InitServer() server {
+func NewServer() server {
 	newrelicApp, err := newrelic.NewApplication(
 		newrelic.ConfigAppName("go-new-relic"),
 		newrelic.ConfigLicense(os.Getenv("NEW_RELIC_LICENSE_KEY")),
@@ -58,7 +58,7 @@ func (s *server) reportHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	server := InitServer()
+	server := NewServer()
 
 	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/", server.rootHandler))
 	http.HandleFunc(newrelic.WrapHandleFunc(server.newrelicApp, "/report", server.reportHandler))
