@@ -1,6 +1,6 @@
 # go-new-relic
 
-Backend web application built with the **Go** programming language. The application exposes two simple RESTful endpoints and is instrumented with **New Relic's APM and Infrastructure agents** to provide comprehensive monitoring.
+Backend web application built with the **Go** programming language. It exposes two simple RESTful endpoints and is instrumented with **New Relic's APM and Infrastructure agents** to provide comprehensive monitoring.
 
 ---
 
