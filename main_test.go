@@ -15,12 +15,12 @@ func TestRootHandler(t *testing.T) {
 	// Arrange
 	req := httptest.NewRequest("GET", "/", nil)
 	rr := httptest.NewRecorder()
-	nrApp, _ := newrelic.NewApplication(
+	newRelicApp, _ := newrelic.NewApplication(
 		newrelic.ConfigAppName("go-new-relic-test"),
 		newrelic.ConfigLicense("0123456789012345678901234567890123456789"),
 	)
 	logger := log.New(log.Writer(), "", log.Default().Flags())
-	server := server{nrApp: nrApp, logger: logger}
+	server := server{newRelicApp: newRelicApp, logger: logger}
 
 	// Act
 	server.rootHandler(rr, req)
@@ -42,12 +42,12 @@ func TestReportHandler(t *testing.T) {
 	// Arrange
 	req := httptest.NewRequest("GET", "/report", nil)
 	rr := httptest.NewRecorder()
-	nrApp, _ := newrelic.NewApplication(
+	newRelicApp, _ := newrelic.NewApplication(
 		newrelic.ConfigAppName("go-new-relic-test"),
 		newrelic.ConfigLicense("0123456789012345678901234567890123456789"),
 	)
 	logger := log.New(log.Writer(), "", log.Default().Flags())
-	server := server{nrApp: nrApp, logger: logger}
+	server := server{newRelicApp: newRelicApp, logger: logger}
 
 	// Act
 	server.reportHandler(rr, req)

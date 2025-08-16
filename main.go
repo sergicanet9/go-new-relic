@@ -12,12 +12,12 @@ import (
 )
 
 type server struct {
-	nrApp  *newrelic.Application
-	logger *log.Logger
+	newRelicApp *newrelic.Application
+	logger      *log.Logger
 }
 
 func InitServer() server {
-	nrApp, err := newrelic.NewApplication(
+	newRelicApp, err := newrelic.NewApplication(
 		newrelic.ConfigAppName("go-new-relic"),
 		newrelic.ConfigLicense(os.Getenv("NEW_RELIC_LICENSE_KEY")),
 		newrelic.ConfigAppLogForwardingEnabled(true),
@@ -26,16 +26,16 @@ func InitServer() server {
 		panic(err)
 	}
 
-	if err := nrApp.WaitForConnection(5 * time.Second); err != nil {
+	if err := newRelicApp.WaitForConnection(5 * time.Second); err != nil {
 		panic(err)
 	}
 
-	writer := logWriter.New(os.Stdout, nrApp)
+	writer := logWriter.New(os.Stdout, newRelicApp)
 	logger := log.New(&writer, "", log.Default().Flags())
 
 	logger.Println("New Relic agent initialized successfully")
 
-	return server{nrApp: nrApp, logger: logger}
+	return server{newRelicApp: newRelicApp, logger: logger}
 }
 
 func (s *server) respond(w http.ResponseWriter, response string) {
@@ -60,8 +60,8 @@ func (s *server) reportHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	server := InitServer()
 
-	http.HandleFunc(newrelic.WrapHandleFunc(server.nrApp, "/", server.rootHandler))
-	http.HandleFunc(newrelic.WrapHandleFunc(server.nrApp, "/report", server.reportHandler))
+	http.HandleFunc(newrelic.WrapHandleFunc(server.newRelicApp, "/", server.rootHandler))
+	http.HandleFunc(newrelic.WrapHandleFunc(server.newRelicApp, "/report", server.reportHandler))
 
 	server.logger.Printf("Server is running on port 8080...")
 	http.ListenAndServe(":8080", nil)
